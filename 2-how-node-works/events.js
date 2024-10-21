@@ -1,5 +1,6 @@
 const EventEmitter = require("events");
 const http = require("http");
+const fs = require("fs");
 
 const myEmitter = new EventEmitter();
 
