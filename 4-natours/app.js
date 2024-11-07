@@ -50,7 +50,9 @@ app.get("/api/v1/tours/:id", (req, res) => {
 
 app.post("/api/v1/tours", (req, res) => {
     // console.log(req.body);
-
+    // console.log(req.body);
+    // console.log(req.params);
+    // console.log(req.query);
     const newId = tours[tours.length - 1].id + 1;
     const newTour = Object.assign({ id: newId }, req.body);
     tours.push(newTour);
@@ -68,6 +70,35 @@ app.post("/api/v1/tours", (req, res) => {
             });
         }
     );
+});
+
+// app.patch(`/api/v1/tours/:id`, (req, res) => {
+//     if (req.params.id * 1 > tours.length) {
+//         res.status(404).json({
+//             status: "fail",
+//             message: "Invalid id"
+//         });
+//     }
+
+//     res.status(200).json({
+//         status: "saccess",
+//         data: {
+//             tour: "Updated tour here..."
+//         }
+//     });
+// });
+app.delete(`/api/v1/tours/:id`, (req, res) => {
+    if (req.params.id * 1 > tours.length) {
+        res.status(404).json({
+            status: "fail",
+            message: "Invalid id"
+        });
+    }
+
+    res.status(204).json({
+        status: "saccess",
+        data: null
+    });
 });
 
 const port = 3000;
