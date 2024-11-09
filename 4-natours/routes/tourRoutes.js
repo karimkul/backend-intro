@@ -9,7 +9,6 @@ router
     .route("/")
     .get(tourController.getAllTours)
     .post(tourController.checkBody, tourController.creatTour);
-
 router
     .route("/:id")
     .get(tourController.getTour)
