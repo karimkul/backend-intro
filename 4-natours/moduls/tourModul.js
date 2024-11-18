@@ -1,4 +1,4 @@
-const { describe } = require('eslint/lib/testers/rule-tester');
+// const { describe } = require('eslint/lib/testers/rule-tester');
 const mongoose = require('mongoose');
 
 const tourSchema = new mongoose.Schema({
