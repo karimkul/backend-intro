@@ -4,6 +4,12 @@ const dotenv = require('dotenv');
 dotenv.config({ path: './config.env' });
 const app = require('./app');
 
+process.on('uncaughtException', err => {
+  console.log('UNCAUGHT EXCEPTION 🤯 Shutting Down...');
+  console.log(err.name, err.message);
+  process.exit(1);
+});
+
 // Replace <PASSWORD> with the actual password from environment variables
 const DB = process.env.DATABASE.replace(
   '<PASSWORD>',
