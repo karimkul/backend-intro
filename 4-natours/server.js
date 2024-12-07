@@ -9,7 +9,6 @@ const DB = process.env.DATABASE.replace(
   '<PASSWORD>',
   process.env.DATABASE_PASSWORD
 );
-
 // Updated mongoose connection
 mongoose
   .connect(DB, {
@@ -19,6 +18,14 @@ mongoose
   .catch(err => console.error('DB connection error:', err));
 
 const port = process.env.PORT || 3000;
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
+const server = app.listen(port, () => {
+  console.log(`App is running on port ${port}`);
+});
+
+process.on('unhandledRejection', err => {
+  console.log(err.name, err.message);
+  console.log('Unhandled Rejection 🤯 Shutting Down...');
+  server.close(() => {
+    process.exit(1);
+  });
 });
