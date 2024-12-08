@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
 // const { validate } = require('./tourModul');
+const bcrypt = require('bcryptjs');
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -13,11 +14,7 @@ const userSchema = new mongoose.Schema({
     unique: true,
     lowercase: true,
     validate: [validator.isEmail, 'Please provide a valid email'],
-    message: 'Please provide a valid email',
-    createdAt: {
-      type: Date,
-      default: Date.now
-    }
+    message: 'Please provide a valid email'
   },
   photo: String,
   password: {
@@ -28,8 +25,26 @@ const userSchema = new mongoose.Schema({
   passwordConfirm: {
     type: String,
     required: [true, 'Please confirm your password'],
-    message: 'Passwords do not match!'
+    message: 'Passwords do not match!',
+    validate: {
+      // This works only on CREATE and SAVE!!!
+      validator: function(el) {
+        return el === this.password; // password confirm : abc === Initial password : abc
+      }
+    }
   }
+});
+
+userSchema.pre('save', async function(next) {
+  // Only run this function if password was actually modified
+  if (!this.isModified('password')) return next();
+
+  //   Hash the password with cost of 12
+  this.password = await bcrypt.hash(this.password, 12);
+
+  //   Delete passwordConfirm field
+  this.passwordConfirm = undefined;
+  next();
 });
 
 const User = mongoose.model('User', userSchema);
