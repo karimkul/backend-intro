@@ -34,6 +34,9 @@ const reviewSchema = mongoose.Schema(
   }
 );
 
+// A single user can only create one review per tour.If not MongoDB will throw a duplicate key error.
+reviewSchema.index({ tour: 1, user: 1 }, { unique: true }); //??????????????????
+
 reviewSchema.pre(/^find/, function(next) {
   // this.populate({
   //   path: 'tour',
