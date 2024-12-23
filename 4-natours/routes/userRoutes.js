@@ -17,6 +17,7 @@ router.get('/me', userController.getMe, userController.getUser);
 router.patch('/updateMe', userController.updateMe);
 router.delete('/deleteMe', userController.deleteMe);
 
+// Protects all routes after this middleware
 router.use(authController.restrictTo('admin'));
 
 router
