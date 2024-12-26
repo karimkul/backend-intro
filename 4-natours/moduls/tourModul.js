@@ -63,7 +63,7 @@ const tourSchema = new mongoose.Schema(
         message: 'Discount price ({VALUE}) should be below regular price'
       }
     },
-    summery: {
+    summary: {
       type: String,
       trim: true
     },
