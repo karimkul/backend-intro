@@ -70,6 +70,55 @@ app.use((req, res, next) => {
   next();
 });
 
+app.use((req, res, next) => {
+  res.setHeader(
+    'Content-Security-Policy',
+    "default-src 'self'; " +
+      "script-src 'self' https://unpkg.com https://api.mapbox.com; " +
+      "style-src 'self' https://unpkg.com https://fonts.googleapis.com https://api.mapbox.com; " +
+      "font-src 'self' https://fonts.gstatic.com; " +
+      "connect-src 'self' https://events.mapbox.com; " +
+      "img-src 'self' data:; " +
+      "worker-src 'self'; " +
+      "frame-src 'self'; " +
+      "child-src 'self'; " +
+      "object-src 'none';"
+  );
+  next();
+});
+app.use(
+  helmet.contentSecurityPolicy({
+    directives: {
+      defaultSrc: ["'self'"],
+      scriptSrc: [
+        "'self'",
+        'https://unpkg.com',
+        'https://cdn.jsdelivr.net',
+        "'unsafe-inline'"
+      ],
+      styleSrc: [
+        "'self'",
+        'https://unpkg.com',
+        'https://fonts.googleapis.com',
+        'https://cdn.jsdelivr.net',
+        "'unsafe-inline'"
+      ],
+      imgSrc: [
+        "'self'",
+        'https://a.tile.openstreetmap.org',
+        'https://b.tile.openstreetmap.org',
+        'https://c.tile.openstreetmap.org',
+        'data:'
+      ],
+      connectSrc: ["'self'"],
+      fontSrc: ["'self'", 'https://fonts.gstatic.com'],
+      objectSrc: ["'none'"],
+      childSrc: ["'none'"],
+      upgradeInsecureRequests: []
+    }
+  })
+);
+
 // 3) ROUTES
 app.use('/', viewRouter);
 app.use('/api/v1/tours', tourRouter);
