@@ -61,6 +61,8 @@ exports.login = catchAsync(async (req, res, next) => {
   // 2) Check if user exists & password is correct
   const user = await User.findOne({ email }).select('+password');
 
+  console.log(user, email, password);
+
   if (!user || !(await user.correctPassword(password, user.password))) {
     return next(new AppError('Incorrect email or password!', 401));
   }
@@ -77,8 +79,9 @@ exports.protect = catchAsync(async (req, res, next) => {
     req.headers.authorization.startsWith('Bearer')
   ) {
     token = req.headers.authorization.split(' ')[1];
+  } else if (req.cookies.jwt) {
+    token = req.cookies.jwt;
   }
-
   if (!token) {
     return next(
       new AppError('You are not logged in! Please log in to get access.', 401)
