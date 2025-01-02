@@ -1,6 +1,7 @@
 // /* eslint-disable */
 const path = require('path');
 const express = require('express');
+const multer = require('multer');
 const morgan = require('morgan');
 const rateLimit = require('express-rate-limit');
 const helmet = require('helmet');
@@ -70,7 +71,7 @@ app.use(
 // Test middlewaresa
 app.use((req, res, next) => {
   req.requestTime = new Date().toISOString();
-  console.log(req.cookies);
+  // console.log(req.cookies);
   next();
 });
 
