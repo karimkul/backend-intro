@@ -7,12 +7,16 @@ const AppError = require('../utils/appError');
 const Email = require('../utils/email');
 
 const signToken = id => {
+  console.log('Signing JWT token...');
+
   return jwt.sign({ id }, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRES_IN
   });
 };
 
 const createSendToken = (user, statusCode, res) => {
+  console.log(`Creating JWT token for user: ${user.email}`);
+
   const token = signToken(user._id);
   const cookieOptions = {
     expires: new Date(
@@ -43,13 +47,7 @@ exports.signup = catchAsync(async (req, res, next) => {
   console.log(url);
 
   await new Email(newUser, url).sendWelcome();
-  // const newUser = await User.create({
-  //   name: req.body.name,
-  //   email: req.body.email,
-  //   password: req.body.password,
-  //   passwordConfirm: req.body.passwordConfirm,
-  //   role: req.body.role || 'user'
-  // });
+
   createSendToken(newUser, 201, res);
 });
 
@@ -175,18 +173,12 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
   await user.save({ validateBeforeSave: false });
 
   // 3) Sent it to user's email
-  const resetURL = `${req.protocol}://${req.get(
-    'host'
-  )}/api/v1/users/resetPassword/${resetToken}`;
-
-  const message = `Forgot your password? Submit a PATCH request with your new password and passwordConform to: ${resetURL}.\nIf didn't forget your password, please ignore this email.!`;
-
   try {
-    // await sendEmail({
-    //   email: user.email,
-    //   subject: 'Your password reset token (valid only 10 minutes)',
-    //   message
-    // });
+    const resetURL = `${req.protocol}://${req.get(
+      'host'
+    )}/api/v1/users/resetPassword/${resetToken}`;
+    await new Email(user, resetURL).sendPasswordReset();
+
     res.status(200).json({
       status: 'success',
       message: 'Token send to email!'

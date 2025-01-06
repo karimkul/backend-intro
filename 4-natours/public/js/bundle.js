@@ -12988,7 +12988,7 @@ if (userDataForm) userDataForm.addEventListener('submit', function (e) {
   form.append('email', document.getElementById('email').value);
   form.append('photo', document.getElementById('photo').files[0]);
   console.log(form);
-  (0, _updateSettings.updateSettings)(form, 'data');
+  updateSetting(form, 'data');
 });
 if (userPasswordForm) userPasswordForm.addEventListener('submit', /*#__PURE__*/function () {
   var _ref = _asyncToGenerator(/*#__PURE__*/_regeneratorRuntime().mark(function _callee(e) {
@@ -12997,27 +12997,22 @@ if (userPasswordForm) userPasswordForm.addEventListener('submit', /*#__PURE__*/f
       while (1) switch (_context.prev = _context.next) {
         case 0:
           e.preventDefault();
-          document.querySelector('.btn--save-password').textContent = 'Updating...';
+          document.querySelector('.btn--save-password').textContent = 'Updating.....';
           passwordCurrent = document.getElementById('password-current').value;
           password = document.getElementById('password').value;
           passwordConfirm = document.getElementById('password-confirm').value;
-          (0, _updateSettings.updateSettings)({
+          _context.next = 7;
+          return updateSetting({
             passwordCurrent: passwordCurrent,
             password: password,
             passwordConfirm: passwordConfirm
           }, 'password');
-          _context.next = 8;
-          return (0, _updateSettings.updateSettings)({
-            passwordCurrent: passwordCurrent,
-            password: password,
-            passwordConfirm: passwordConfirm
-          }, 'password');
-        case 8:
+        case 7:
           document.querySelector('.btn--save-password').textContent = 'Save password';
           document.getElementById('password-current').value = '';
           document.getElementById('password').value = '';
           document.getElementById('password-confirm').value = '';
-        case 12:
+        case 11:
         case "end":
           return _context.stop();
       }
@@ -13052,7 +13047,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49552" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "58174" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];
